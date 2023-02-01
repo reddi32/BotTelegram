@@ -20,16 +20,23 @@ def check_new_article(url, bot_token, chat_id):
             # Inviare il messaggio su Telegram
             text = f"Nuovo articolo pubblicato: {title}"
             send_message(chat_id, text, bot_token)
+            # Aggiornare la lista degli articoli notificati
+            with open("notified_articles.txt", "a") as file:
+                file.write(f"{title}\n")
 
 
+# Caricare la lista degli articoli notificati
+try:
+    with open("notified_articles.txt", "r") as file:
+        notified_articles = file.read().splitlines()
+except FileNotFoundError:
+    notified_articles = []
 # Impostare il URL del sito web
 url = "https://www.turismoroma.it/"
 # Sostituire con il token del bot
 bot_token = "6165661441:AAGUdYk4oMsfuKV3hp5LDaeVZzB0VOnxdZQ"
 # Sostituire con il chat ID
 chat_id = "163919711"
-# Mantenere un elenco degli articoli notificati
-notified_articles = []
 # Verificare se ci sono nuovi articoli ogni 10 minuti
 while True:
     check_new_article(url, bot_token, chat_id)
