@@ -12,15 +12,15 @@ def check_new_article(url, bot_token, chat_id):
     soup = BeautifulSoup(page.content, "html.parser")
     articles = soup.find_all("article")
     # Verificare se ci sono nuovi articoli
-    if len(articles) > 0:
-        new_article = articles[0]
-        title = new_article.find("h2").text
+    for article in articles:
+        title = article.find("h2").text
         # Verificare se l'articolo è già stato notificato
         if title not in notified_articles:
             notified_articles.append(title)
             # Inviare il messaggio su Telegram
             text = f"Nuovo articolo pubblicato: {title}"
             send_message(chat_id, text, bot_token)
+
 
 # Impostare il URL del sito web
 url = "https://www.turismoroma.it/"
